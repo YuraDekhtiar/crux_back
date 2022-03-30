@@ -1,0 +1,27 @@
+{
+  "name": "crux_back_git",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YuraDekhtiar/crux_back.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/YuraDekhtiar/crux_back/issues"
+  },
+  "homepage": "https://github.com/YuraDekhtiar/crux_back#readme",
+  "dependencies": {
+    "koa": "^2.13.4",
+    "koa-bodyparser": "^4.3.0",
+    "koa-cors": "^0.0.16",
+    "koa-router": "^10.1.1"
+  }
+}
