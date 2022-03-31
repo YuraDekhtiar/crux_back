@@ -1,5 +1,4 @@
 const mysql = require('mysql');
-const {DB} = require("../dataFetcher/dataFetcherDAL");
 
 // Set database connection credentials
 const config = {
@@ -12,8 +11,8 @@ const config = {
 
 const pool = mysql.createPool(config);
 
-const query = async(sql, params = []) => new Promise((resolve, reject) => {
-    pool.query(sql, (err, result) => {
+const query = async(sql, params) => new Promise((resolve, reject) => {
+    pool.query(sql, params, (err, result) => {
         if (err) {
             console.log('Error running sql: ' + sql)
             console.log(err)
