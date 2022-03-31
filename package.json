@@ -22,6 +22,9 @@
     "koa": "^2.13.4",
     "koa-bodyparser": "^4.3.0",
     "koa-cors": "^0.0.16",
-    "koa-router": "^10.1.1"
+    "koa-router": "^10.1.1",
+    "mysql": "^2.18.1",
+    "node-cron": "^3.0.0",
+    "node-schedule": "^2.1.0"
   }
 }
