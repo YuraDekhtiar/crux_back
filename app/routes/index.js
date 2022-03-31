@@ -10,6 +10,7 @@ router
 
         return next;
     })
+    // dataFetcher routes
     .get('/dataFetcher', dataFetcher.get)
     .post('/dataFetcher/add_url', dataFetcher.addUrl)
     .delete('/dataFetcher/delete_url', dataFetcher.deleteUrl)
