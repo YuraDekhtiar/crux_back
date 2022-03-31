@@ -34,7 +34,8 @@ module.exports = {
     },
     addUrl: async (ctx, next) => {
         try {
-            ctx.body = await dataFetcher.addUrl(ctx.request.body.url);
+            const urls = ctx.request.body.url;
+            ctx.body = await dataFetcher.addUrl(Array.isArray(urls) ? urls : [urls]);
             ctx.status = 200;
         } catch (e) {
             console.error(`ERROR -> ${e?.message}, PATH -> ${__filename}, METHOD -> get`);
