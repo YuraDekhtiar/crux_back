@@ -3,6 +3,9 @@ const nodeCron = require('node-cron');
 const CrUXUtil = require('../CrUXUtil/index')
 const Timeout = require('await-timeout');
 
+// Мінімальна затримка для запитів до GOOGLE CRUX
+// 2.5 запити на 1 секунду
+const MIN_TIME_DELAYS = 400;
 
 module.exports = {
     getAll: () => 'all urls',
@@ -13,10 +16,21 @@ module.exports = {
         return 'Scheduler started'
     },
     getMetrics: async (urlData) => {
-        return 'getMetrics'
+        let startTime;
+        let endTime;
+        let data = [];
+        for (const url of urlData.url) {
+            startTime = new Date().getTime();
+            data.push(await CrUXUtil.getCrUX(url));
+            endTime = new Date().getTime();
+            if ((endTime - startTime) < MIN_TIME_DELAYS) {
+                await Timeout.set(MIN_TIME_DELAYS - (endTime - startTime));
+            }
+        }
+        console.log(data)
+        return data;
     },
     addUrl: async (urlData) => {
         return DB.saveTrackingUrl(urlData, 0).then(r => r);
     },
-
 };
