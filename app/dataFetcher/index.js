@@ -8,7 +8,9 @@ const Timeout = require('await-timeout');
 const MIN_TIME_DELAYS = 400;
 
 module.exports = {
-    getAll: () => 'all urls',
+    getAllTrackingUrl: async () => {
+        return await DB.getTrackingUrl().then(r => r)
+    },
     stopSchedule: () => {
         return 'Scheduler stoped'
     },
@@ -34,3 +36,5 @@ module.exports = {
         return DB.saveTrackingUrl(urlData, 0).then(r => r);
     },
 };
+
+//DB.getTrackingUrl().then(r => console.log(r))
