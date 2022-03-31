@@ -2,10 +2,10 @@ const mysql = require('mysql');
 
 // Set database connection credentials
 const config = {
-    host: 'localhost',
-    port: 3306,
+    host: '195.238.180.33',
+    port: 33060,
     user: 'admin',
-    password: 'password',
+    password: 'Password',
     database: 'crux_db',
 };
 
