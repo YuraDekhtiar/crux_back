@@ -11,7 +11,8 @@ router
         return next;
     })
     .get('/dataFetcher', dataFetcher.get)
-    .post('/dataFetcher/addUrl', dataFetcher.addUrl)
+    .post('/dataFetcher/add_url', dataFetcher.addUrl)
+    .delete('/dataFetcher/delete_url', dataFetcher.deleteUrl)
     .post('/dataFetcher/metrics', dataFetcher.getMetrics)
     .get('/dataFetcher/stop', dataFetcher.stopSchedule)
     .get('/dataFetcher/start', dataFetcher.startSchedule)

@@ -11,6 +11,12 @@ module.exports = {
     getAllTrackingUrl: async () => {
         return await DB.getTrackingUrl().then(r => r)
     },
+    addUrl: async (urls) => {
+        return DB.saveTrackingUrl(urls, 0).then(r => r);
+    },
+    deleteUrl: async (id) => {
+        return DB.deleteTrackingUrl(id).then(r => r);
+    },
     stopSchedule: () => {
         return 'Scheduler stoped'
     },
@@ -32,9 +38,6 @@ module.exports = {
         console.log(data)
         return data;
     },
-    addUrl: async (urlData) => {
-        return DB.saveTrackingUrl(urlData, 0).then(r => r);
-    },
 };
 
-//DB.getTrackingUrl().then(r => console.log(r))
+//DB.deleteTrackingUrl([1,2,3,4,5,6]).then(r => console.log(r))
