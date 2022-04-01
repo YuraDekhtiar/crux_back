@@ -1,4 +1,3 @@
-const readFromDB = require('../DB');
 const dataFetcher = require('./index');
 
 function toArray(data) {

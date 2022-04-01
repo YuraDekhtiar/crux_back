@@ -1,5 +1,4 @@
 const queryDB = require("../DB");
-const moment = require('moment')
 
 module.exports = {
     DB: {
