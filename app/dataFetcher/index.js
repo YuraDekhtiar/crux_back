@@ -12,7 +12,7 @@ module.exports = {
         return await DB.getTrackingUrl().then(r => r)
     },
     addUrl: async (urls) => {
-        return DB.saveTrackingUrl(urls, 0).then(r => r);
+        return DB.addTrackingUrl(urls, 0).then(r => r);
     },
     deleteUrl: async (id) => {
         return DB.deleteTrackingUrl(id).then(r => r);
@@ -23,21 +23,33 @@ module.exports = {
     startSchedule: () => {
         return 'Scheduler started'
     },
-    getMetrics: async (urlData) => {
+    // Якщо saveToDB === false, зберігання до БД не відбувається
+    getMetrics: async (urls, saveToDB = false) => {
         let startTime;
         let endTime;
-        let data = [];
-        for (const url of urlData.url) {
+        const data = [];
+        let item = [];
+        for (const url of urls) {
             startTime = new Date().getTime();
-            data.push(await CrUXUtil.getCrUX(url));
+            item = await CrUXUtil.getCrUX(url);
+            data.push(item);
+            if(saveToDB === true) await saveMetrics(item)
             endTime = new Date().getTime();
             if ((endTime - startTime) < MIN_TIME_DELAYS) {
                 await Timeout.set(MIN_TIME_DELAYS - (endTime - startTime));
             }
         }
-        console.log(data)
         return data;
     },
 };
 
-//DB.deleteTrackingUrl([1,2,3,4,5,6]).then(r => console.log(r))
+async function saveMetrics(data) {
+    for (const item of data.data) {
+        if (typeof item['error']) {
+            await DB.addHistoryUrl(data.url)
+            await DB.saveMetrics(data.url, item)
+        }
+    }
+}
+
+//DB.addHistoryUrl('ssss').then(r => console.log(  r))

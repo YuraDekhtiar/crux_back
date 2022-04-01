@@ -59,7 +59,7 @@ module.exports = {
     },
     getMetrics: async (ctx, next) => {
         try {
-            ctx.body = await dataFetcher.getMetrics(ctx.request.body);
+            ctx.body = await dataFetcher.getMetrics(toArray(ctx.request.body.url));
             ctx.status = 200;
         } catch (e) {
             console.error(`ERROR -> ${e?.message}, PATH -> ${__filename}, METHOD -> get`);
