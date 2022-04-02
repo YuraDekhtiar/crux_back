@@ -56,7 +56,9 @@ module.exports = {
     },
     getMetrics: async (ctx, next) => {
         try {
-            ctx.body = await dataFetcher.getMetrics(util.toArray(ctx.request.body.url));
+            const url = 'https://auto.ria.com/uk/'
+            //ctx.body = await dataFetcher.getMetrics(util.toArray(ctx.request.body.url));
+            ctx.body = await dataFetcher.getMetrics(util.toArray(url));
             ctx.status = 200;
         } catch (e) {
             console.error(`ERROR -> ${e?.message}, PATH -> ${__filename}, METHOD -> get`);

@@ -24,7 +24,7 @@ module.exports = {
         return 'Scheduler started'
     },
     // Якщо saveToDB === false, зберігання до БД не відбувається
-    getMetrics: async (urls, saveToDB = true) => {
+    getMetrics: async (urls) => {
         const data = [];
         for (const url of urls) {
             data.push(await getMetrics(url).then(r => r));
@@ -47,7 +47,7 @@ async function saveData(data) {
 
 async function saveMetrics(data) {
     for (const item of data.data) {
-        if (typeof item.error === 'undefined') {
+       if (typeof item.error === 'undefined') {
             await DB.addHistoryUrl(data.url)
             await DB.addTrackingUrl(util.toArray(data.url), 1)
             await DB.saveMetrics(data.url, item)
@@ -67,13 +67,10 @@ task.start();
 
 async function temp() {
     const data = await DB.getTrackingUrl().then(r => r)
-
-    for(const item of data) {
-        await getMetrics(item.url).then(r => console.log(r))
-    }
-
+    console.log(data)
 }
-//temp();
+
+temp();
 
 
 

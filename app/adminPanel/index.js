@@ -3,12 +3,12 @@ const {DB} = require('./adminPanelDAL');
 
 module.exports = {
     getMetricsByUrl: async () => {
-        //return await DB.getMetricsByUrl('').then(r => r)
-        //data.forEach( emotion => console.log(emotion.url) );
-        return data;
+        return await DB.getMetricsByUrl('').then(r => r)
     },
 
 }
+
+
 const data = [
     {
         "id": 1,

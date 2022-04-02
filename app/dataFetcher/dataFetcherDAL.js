@@ -4,11 +4,6 @@ module.exports = {
     DB: {
         getTrackingUrl:
             () => queryDB(`SELECT * FROM tracking_url`),
-        addTrackingUrl1:
-            (items, success) => queryDB(
-                `INSERT IGNORE INTO tracking_url (url, last_tracking_date, success) VALUES ?`,
-                [items.map(item => [item, nowDate(), success])]
-            ),
         addTrackingUrl:
             (items, success) => queryDB(
                 `INSERT INTO tracking_url (url, last_tracking_date, success) VALUES ?
@@ -43,12 +38,6 @@ module.exports = {
                     `)
                 }
             },
-        getTrackingSettings:
-            async () => (
-                await queryDB(`SELECT * FROM tracking_settings`)
-            )
-
-
     }
 }
 

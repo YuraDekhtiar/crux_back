@@ -17,6 +17,12 @@ module.exports = {
                     LEFT JOIN 
                        histogram his ON metrics.histogram_id = his.id
                     WHERE metrics.url_id = (SELECT id FROM url_history WHERE url = 'https://auto.ria.com/uk/')
+                `),
+        getMetricsByUrl1:
+            async (url) => await queryDB(
+                `SELECT *
+                    FROM metrics
+                   
                 `)
     }
  }

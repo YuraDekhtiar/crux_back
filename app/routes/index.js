@@ -7,21 +7,21 @@ const adminPanel = require('../adminPanel/adminPanelController');
 
 router
     .get('/', async (ctx, next) => {
-        ctx.body = 'Доброго вечора ми з України:)';
+        const routes = [];
+        router.stack.forEach(item => routes.push({path:item.path, methods:item.methods.toString()}))
+        ctx.body = routes;
 
-        return next;
     })
     // dataFetcher routes
     .get('/dataFetcher', dataFetcher.get)
     .post('/dataFetcher/add_url', dataFetcher.addUrl)
     .delete('/dataFetcher/delete_url', dataFetcher.deleteUrl)
-    .post('/dataFetcher/metrics', dataFetcher.getMetrics)
+    .post('/dataFetcher/metrics_to_url', dataFetcher.getMetrics)
+    .get('/dataFetcher/metrics_to_url', dataFetcher.getMetrics)
     .get('/dataFetcher/stop', dataFetcher.stopSchedule)
     .get('/dataFetcher/start', dataFetcher.startSchedule)
     // adminPanel routes
-    .get('/adminPanel/url', adminPanel.get)
-
-
+    .get('/adminPanel/metrics', adminPanel.get)
 
 module.exports = {
     router,
