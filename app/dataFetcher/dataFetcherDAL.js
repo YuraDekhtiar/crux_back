@@ -1,13 +1,19 @@
-const queryDB = require("../DB");
+const queryDB = require('../DB');
 
 module.exports = {
     DB: {
         getTrackingUrl:
             () => queryDB(`SELECT * FROM tracking_url`),
-        addTrackingUrl:
+        addTrackingUrl1:
             (items, success) => queryDB(
                 `INSERT IGNORE INTO tracking_url (url, last_tracking_date, success) VALUES ?`,
-                [items.map(item => [item, new Date().toISOString().slice(0, 19), success])]
+                [items.map(item => [item, nowDate(), success])]
+            ),
+        addTrackingUrl:
+            (items, success) => queryDB(
+                `INSERT INTO tracking_url (url, last_tracking_date, success) VALUES ?
+                ON DUPLICATE KEY UPDATE last_tracking_date='${nowDate()}', success=${success}`,
+                [items.map(item => [item, nowDate(), success])]
             ),
         deleteTrackingUrl:
             (items) => (queryDB(`DELETE FROM tracking_url WHERE (id) IN (?)`,
@@ -28,7 +34,7 @@ module.exports = {
 
                     await queryDB(`INSERT INTO metrics (tracking_date, form_factor_id, histogram_id, url_id, metrics_name_id)
                             VALUES (
-                                    ('${new Date().toISOString().slice(0, 19)}'), 
+                                    ('${nowDate()}'), 
                                     (SELECT id FROM form_factor WHERE name = '${data.formFactor}'),
                                     (${idLatestHistogram}),
                                     (SELECT id FROM url_history WHERE url = '${url}'),
@@ -37,7 +43,16 @@ module.exports = {
                     `)
                 }
             },
+        getTrackingSettings:
+            async () => (
+                await queryDB(`SELECT * FROM tracking_settings`)
+            )
+
+
     }
 }
 
+function nowDate() {
+    return new Date().toISOString().slice(0, 10);
+}
 

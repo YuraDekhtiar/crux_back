@@ -5,7 +5,7 @@ const API_KEY = 'AIzaSyAnT8DwD0QbBnBB1-h0zDhx6jsiFOxDYWg';
 const API_ENDPOINT = `https://chromeuxreport.googleapis.com/v1/records:queryRecord?key=${API_KEY}`;
 const CRUX_METRICS = ['first_input_delay', 'largest_contentful_paint', 'cumulative_layout_shift'];
 const HISTOGRAM_STATUS = ['good', 'needs_improvement', 'poor'];
-const FORM_FACTOR = ['desktop', 'phone', 'tablet']
+const FORM_FACTOR = ['desktop', 'phone']
 
 async function getCrUX(url) {
     const data = [];

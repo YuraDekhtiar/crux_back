@@ -2,6 +2,7 @@ const Router = require('koa-router');
 const router = new Router();
 
 const dataFetcher = require('../dataFetcher/dataFetcherController');
+const adminPanel = require('../adminPanel/adminPanelController');
 
 
 router
@@ -17,7 +18,8 @@ router
     .post('/dataFetcher/metrics', dataFetcher.getMetrics)
     .get('/dataFetcher/stop', dataFetcher.stopSchedule)
     .get('/dataFetcher/start', dataFetcher.startSchedule)
-
+    // adminPanel routes
+    .get('/adminPanel/url', adminPanel.get)
 
 
 

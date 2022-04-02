@@ -1,0 +1,24 @@
+const queryDB = require("../DB");
+
+module.exports = {
+    DB: {
+        getMetricsByUrl:
+            async (url) => await queryDB(
+                `SELECT metrics.id, metrics.tracking_date, f_f.name AS form_factor, url.url AS url,
+                        m_name.name AS metrics_name, his.good AS good, his.needs_improvement AS needs_improvement,
+                        his.poor AS poor, his.poor AS percentiles
+                    FROM metrics
+                    LEFT JOIN 
+                        form_factor f_f ON metrics.form_factor_id = f_f.id
+                    LEFT JOIN 
+                        url_history url ON metrics.url_id = url.id
+                    LEFT JOIN 
+                       metrics_name m_name ON metrics.metrics_name_id = m_name.id  
+                    LEFT JOIN 
+                       histogram his ON metrics.histogram_id = his.id
+                    WHERE metrics.url_id = (SELECT id FROM url_history WHERE url = 'https://auto.ria.com/uk/')
+                `)
+    }
+ }
+
+
