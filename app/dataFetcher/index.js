@@ -23,14 +23,9 @@ module.exports = {
     startSchedule: () => {
         return 'Scheduler started'
     },
-    getMetrics: async (urls) => {
-        const data = [];
-        for (const url of urls) {
-            data.push(await getMetrics(url).then(r => r));
-        }
-        await saveData(data);
-        return data;
-    },
+    getMetrics: (url) => getMetrics(url),
+    saveData: (data) => saveData(data)
+
 };
 
 async function getMetrics(url)  {
@@ -40,20 +35,18 @@ async function getMetrics(url)  {
     return {res, requestTime:(endTime - startTime)};
 }
 
-async function saveData(data) {
-    data.forEach(item => saveMetrics(item.res))
-}
-
-async function saveMetrics(data) {
-    for (const item of data.data) {
+async function saveData({res}) {
+    const OkPacket = [];
+    for (const item of res.data) {
        if (typeof item.error === 'undefined') {
-            await DB.addHistoryUrl(data.url)
-            await DB.addTrackingUrl(util.toArray(data.url), 1)
-            await DB.saveMetrics(data.url, item)
+            await DB.addHistoryUrl(res.url);
+            await DB.addTrackingUrl(util.toArray(res.url), 1);
+            OkPacket.push(...await DB.saveMetrics(res.url, item))
         } else {
-            await DB.addTrackingUrl(util.toArray(data.url), 0)
+            await DB.addTrackingUrl(util.toArray(res.url), 0)
         }
     }
+    return OkPacket;
 }
 
 /*
@@ -67,9 +60,8 @@ task.start();
 async function temp() {
     const data = [];
     for (const item of await DB.getTrackingUrl().then(r => r)) {
-        data.push(await getMetrics(item.url).then(r => r));
+        await saveData(await getMetrics(item.url).then(r => r));
     }
-    await saveData(data);
     console.log('End')
 }
 

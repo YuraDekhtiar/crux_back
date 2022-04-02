@@ -17,12 +17,12 @@ router
     .get('/dataFetcher', dataFetcher.get)
     .post('/dataFetcher/add_url', dataFetcher.addUrl)
     .delete('/dataFetcher/delete_url', dataFetcher.deleteUrl)
-    .post('/dataFetcher/metrics_to_url', dataFetcher.getMetrics)
-    .get('/dataFetcher/metrics_to_url', dataFetcher.getMetrics)
     .get('/dataFetcher/stop', dataFetcher.stopSchedule)
     .get('/dataFetcher/start', dataFetcher.startSchedule)
     // adminPanel routes
-    .get('/adminPanel/metrics', adminPanel.get)
+    .get('/adminPanel/metrics/', adminPanel.metricsByUrl)
+    .get('/adminPanel/metricsById', adminPanel.metricsById)
+    .post('/adminPanel/metrics_to_url', adminPanel.getMetrics)
 
 module.exports = {
     router,

@@ -19,6 +19,7 @@ module.exports = {
             (url) => (queryDB(`INSERT IGNORE INTO url_history (url) VALUES ('${url}')`)),
         saveMetrics:
             async (url, data) => {
+                const OkPacket = [];
                 let metrics;
                 for (const item in data.metrics) {
                     metrics = data.metrics[item].histogram;
@@ -26,8 +27,7 @@ module.exports = {
                     const idLatestHistogram = await queryDB(`INSERT INTO histogram (good, needs_improvement, poor, percentiles)
                         VALUES ('${metrics[0].good}', '${metrics[1].needs_improvement}', '${metrics[2].poor}', '${data.metrics[item].p75}')`)
                         .then(r => r.insertId);
-
-                    await queryDB(`INSERT INTO metrics (tracking_date, form_factor_id, histogram_id, url_id, metrics_name_id)
+                    OkPacket.push(await queryDB(`INSERT INTO metrics (tracking_date, form_factor_id, histogram_id, url_id, metrics_name_id)
                             VALUES (
                                     ('${nowDate()}'), 
                                     (SELECT id FROM form_factor WHERE name = '${data.formFactor}'),
@@ -35,8 +35,9 @@ module.exports = {
                                     (SELECT id FROM url_history WHERE url = '${url}'),
                                     (SELECT id FROM metrics_name WHERE name = '${item}')
                             )
-                    `)
+                    `));
                 }
+                return OkPacket;
             },
     }
 }
