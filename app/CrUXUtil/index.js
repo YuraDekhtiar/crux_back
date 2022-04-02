@@ -61,10 +61,10 @@ function getRecord(payload) {
 function getHistogram(payload) {
     const histogram = [];
     for (let i = 0; i < payload.histogram.length; i++) {
-        histogram.push({[HISTOGRAM_STATUS[i]]:(payload.histogram[i].density * 100).toFixed(2)});
+        histogram.push({[HISTOGRAM_STATUS[i]]:(payload.histogram[i].density)});
     }
 
-    return {histogram, percentiles:payload.percentiles.p75};
+    return {histogram, p75:payload.percentiles.p75};
 }
 
 module.exports = {

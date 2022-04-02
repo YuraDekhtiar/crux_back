@@ -11,6 +11,7 @@ router
         router.stack.forEach(item => routes.push({path:item.path, methods:item.methods.toString()}))
         ctx.body = routes;
 
+
     })
     // dataFetcher routes
     .get('/dataFetcher', dataFetcher.get)
