@@ -1,5 +1,5 @@
 const queryDB = require('../DB');
-
+const {util} = require("../utils");
 module.exports = {
     DB: {
         getTrackingUrl:
@@ -7,8 +7,8 @@ module.exports = {
         addTrackingUrl:
             (items, success) => queryDB(
                 `INSERT INTO tracking_url (url, last_tracking_date, success) VALUES ?
-                ON DUPLICATE KEY UPDATE last_tracking_date='${nowDate()}', success=${success}`,
-                [items.map(item => [item, nowDate(), success])]
+                ON DUPLICATE KEY UPDATE last_tracking_date='${util.nowDate()}', success=${success}`,
+                [items.map(item => [item, util.nowDate(), success])]
             ),
         deleteTrackingUrl:
             (items) => (queryDB(`DELETE FROM tracking_url WHERE (id) IN (?)`,
@@ -29,7 +29,7 @@ module.exports = {
                         .then(r => r.insertId);
                     OkPacket.push(await queryDB(`INSERT INTO metrics (tracking_date, form_factor_id, histogram_id, url_id, metrics_name_id)
                             VALUES (
-                                    ('${nowDate()}'), 
+                                    ('${util.nowDate()}'), 
                                     (SELECT id FROM form_factor WHERE name = '${data.formFactor}'),
                                     (${idLatestHistogram}),
                                     (SELECT id FROM url_history WHERE url = '${url}'),
@@ -42,7 +42,4 @@ module.exports = {
     }
 }
 
-function nowDate() {
-    return new Date().toISOString().slice(0, 10);
-}
 

@@ -3,19 +3,19 @@ const dataFetcher = require('../dataFetcher/index');
 
 
 module.exports = {
-    getMetricsByUrl: async () => {
-        return await DB.getMetricsByUrl('').then(r => r)
+    getMetricsByUrl: async (params) => {
+        return await DB.getMetricsByUrl(params);
     },
     getMetricsById: async (id) => {
-        return await DB.getMetricsById(id).then(r => r)
+        return await DB.getMetricsById(id);
     },
     getMetricsOnline: async (urls) => {
         const OkPacket = [];
-        const data = [];
         for (const url of urls) {
             OkPacket.push(...await dataFetcher.saveData(await dataFetcher.getMetrics(url).then(r => r)));
         }
-        return OkPacket.map(item => item.insertId);
+
+        return await DB.getMetricsById(OkPacket.map(item => item.insertId));
     },
 
 

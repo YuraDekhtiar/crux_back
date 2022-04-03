@@ -1,5 +1,7 @@
 const queryDB = require("../DB");
 
+const LIMIT = `1000`
+
 const baseMetricsQuery = `SELECT metrics.id, metrics.tracking_date, f_f.name AS form_factor, url.url AS url,
                             m_name.name AS metrics_name, his.good AS good, his.needs_improvement AS needs_improvement,
                             his.poor AS poor, his.percentiles AS percentiles
@@ -13,14 +15,24 @@ const baseMetricsQuery = `SELECT metrics.id, metrics.tracking_date, f_f.name AS 
                         LEFT JOIN 
                             histogram his ON metrics.histogram_id = his.id
                         `
-const limit = `LIMIT 1000`
+
 module.exports = {
     DB: {
         getMetricsByUrl:
-            async (url) => await queryDB(`${baseMetricsQuery} WHERE metrics.url_id = (SELECT id FROM url_history WHERE url = 'https://auto.ria.com/uk/') ${limit}` ),
+            async ({url, fromDate, endDate, limit, formFactor}) => queryDB(
+                `${baseMetricsQuery} 
+                WHERE metrics.url_id = (SELECT id FROM url_history WHERE url IN (?))
+                AND metrics.tracking_date BETWEEN (?) AND (?)
+                AND form_factor_id = (SELECT id FROM form_factor WHERE name IN (?))
+                ORDER BY metrics.tracking_date ASC
+                LIMIT  ${limit || LIMIT}`,
+                [url.map(item => item), [fromDate], [endDate], [formFactor]]
+
+            ),
         getMetricsById:
             async (id) => await queryDB(
-                `${baseMetricsQuery} WHERE metrics.id IN (?) ${limit}`,
+                `${baseMetricsQuery} WHERE metrics.id IN (?) 
+                ${LIMIT}`,
                 [id.map(item => [item])]
             ),
 

@@ -55,3 +55,6 @@ module.exports = {
         return next();
     },
 }
+
+
+console.log(util.nowDate())
