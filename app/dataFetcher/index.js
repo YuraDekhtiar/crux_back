@@ -49,7 +49,6 @@ async function saveData({res}) {
     return OkPacket;
 }
 
-
 const task = nodeCron.schedule(`00 00 05 * * *`, async () => {
     for (const item of await DB.getTrackingUrl().then(r => r)) {
         await saveData(await getMetrics(item.url).then(r => r));

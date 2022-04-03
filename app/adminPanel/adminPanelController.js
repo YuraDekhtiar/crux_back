@@ -32,7 +32,7 @@ module.exports = {
         }
         return next();
     },
-    getMetrics: async (ctx, next) => {
+    metricsByUrlOnline: async (ctx, next) => {
         try {
             //const url = 'https://auto.ria.com/uk/'
             //ctx.body = await dataFetcher.getMetrics(util.toArray(url));
@@ -47,9 +47,19 @@ module.exports = {
     },
     getMetricsGetTest: async (ctx, next) => {
         try {
-            const url = 'https://auto.ria.com/uk/newauto/'
+            const url = 'https://auto.ria.com/uk/car/used/'
 
             ctx.body = await adminPanel.getMetricsOnline(util.toArray(url));
+            ctx.status = 200;
+        } catch (e) {
+            console.error(`ERROR -> ${e?.message}, PATH -> ${__filename}, METHOD -> get`);
+            ctx.status = 500;
+        }
+        return next();
+    },
+    trackedUrl: async (ctx, next) => {
+        try {
+            ctx.body = await adminPanel.getTrackedUrl();
             ctx.status = 200;
         } catch (e) {
             console.error(`ERROR -> ${e?.message}, PATH -> ${__filename}, METHOD -> get`);

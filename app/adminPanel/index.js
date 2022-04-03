@@ -3,6 +3,7 @@ const dataFetcher = require('../dataFetcher/index');
 
 
 module.exports = {
+    getTrackedUrl: async () => DB.getTrackedUrl(),
     getMetricsByUrl: async (params) => {
         const {urls} = params;
         const res = [];
@@ -11,9 +12,7 @@ module.exports = {
         }
         return res;
     },
-    getMetricsById: async (id) => {
-        return await DB.getMetricsById(id);
-    },
+    getMetricsById: async (id) => await DB.getMetricsById(id),
     getMetricsOnline: async (urls) => {
         const OkPacket = [];
         const res = [];
@@ -30,7 +29,6 @@ module.exports = {
         if(OkPacket.length > 0) {
             res.push(...await DB.getMetricsById(OkPacket.map(item => item.insertId)));
         }
-
         return res;
     },
 

@@ -3,7 +3,7 @@ const dataFetcher = require('./index');
 const {util} = require('../utils/index')
 
 module.exports = {
-    get: async (ctx, next) => {
+    trackingUrl: async (ctx, next) => {
         try {
             ctx.body = await dataFetcher.getAllTrackingUrl();
             ctx.status = 200;
@@ -45,7 +45,7 @@ module.exports = {
     },
     deleteUrl: async (ctx, next) => {
         try {
-            let id = ctx.query['id'];
+            const id = ctx.query['id'];
             ctx.body = await dataFetcher.deleteUrl(util.toArray(id));
             ctx.status = 200;
         } catch (e) {
@@ -55,6 +55,3 @@ module.exports = {
         return next();
     },
 }
-
-
-console.log(util.nowDate())

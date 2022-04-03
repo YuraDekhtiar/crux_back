@@ -14,18 +14,26 @@ router
 
 
     })
-    // dataFetcher routes
-    .get('/dataFetcher/tracking_url', dataFetcher.get)
+    // dataFetcher
+    .get('/dataFetcher/tracking_url', dataFetcher.trackingUrl)
     .post('/dataFetcher/add_url', dataFetcher.addUrl)
     .delete('/dataFetcher/delete_url', dataFetcher.deleteUrl)
     .get('/dataFetcher/stop', dataFetcher.stopSchedule)
     .get('/dataFetcher/start', dataFetcher.startSchedule)
-    // adminPanel routes
+    // adminPanel
     .get('/adminPanel/metrics/', adminPanel.metricsByUrl)
     .get('/adminPanel/metrics_by_id', adminPanel.metricsById)
-    .post('/adminPanel/metrics_by_url', adminPanel.getMetrics)
-    .get('/adminPanel/metrics_by_url', adminPanel.getMetricsGetTest)
+    .post('/adminPanel/metrics_by_url', adminPanel.metricsByUrlOnline)
+
+    .get('/adminPanel/metrics_by_url', adminPanel.getMetricsGetTest)     // видалити після тестування
+
+    .get('/adminPanel/tracked_url', adminPanel.trackedUrl)
 
 module.exports = {
     router,
 };
+function test() {
+    const date = new Date();
+    return new Date().toISOString().slice(0, 10)
+}
+console.log(   test());

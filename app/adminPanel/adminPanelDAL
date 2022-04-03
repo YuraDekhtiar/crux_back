@@ -18,16 +18,15 @@ const baseMetricsQuery = `SELECT metrics.id, metrics.tracking_date, f_f.name AS 
 
 module.exports = {
     DB: {
-        getMetricsByUrl:
-            async (url, {fromDate, endDate, limit, formFactor}) => queryDB(
+        getTrackedUrl: async() => queryDB(`SELECT * FROM url_history`),
+        getMetricsByUrl: async (url, {fromDate, endDate, limit, formFactor}) => queryDB(
                 `${baseMetricsQuery} 
                 WHERE metrics.url_id = (SELECT id FROM url_history WHERE url = '${url}')
                 AND metrics.tracking_date BETWEEN ('${fromDate || util.nowDate()}') AND ('${endDate || util.nowDate()}')
                                 AND form_factor_id = (SELECT id FROM form_factor WHERE name = '${formFactor || 'desktop'}')
                 ORDER BY metrics.tracking_date ASC
                 LIMIT  ${limit || LIMIT}`),
-        getMetricsById:
-            async (id) => await queryDB(
+        getMetricsById: async (id) => await queryDB(
                 `${baseMetricsQuery} WHERE metrics.id IN (?) 
                 LIMIT ${LIMIT}`,
                 [id.map(item => [item])]

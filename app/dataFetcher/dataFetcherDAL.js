@@ -2,23 +2,18 @@ const queryDB = require('../DB');
 const {util} = require("../utils");
 module.exports = {
     DB: {
-        getTrackingUrl:
-            () => queryDB(`SELECT * FROM tracking_url`),
-        addTrackingUrl:
-            (url, success) => queryDB(
+        getTrackingUrl: () => queryDB(`SELECT * FROM tracking_url`),
+        addTrackingUrl: (url, success) => queryDB(
                 `INSERT INTO tracking_url (url, last_tracking_date, success) VALUES ?
                 ON DUPLICATE KEY UPDATE last_tracking_date='${util.nowDate()}', success=${success}`,
                 [url.map(u => [u, util.nowDate(), success])]
             ),
-        deleteTrackingUrl:
-            (items) => (queryDB(`DELETE FROM tracking_url WHERE (id) IN (?)`,
+        deleteTrackingUrl: (items) => (queryDB(`DELETE FROM tracking_url WHERE (id) IN (?)`,
                     [items.map(item => [item])]
                 )
             ),
-        addHistoryUrl:
-            (url) => (queryDB(`INSERT IGNORE INTO url_history (url) VALUES ('${url}')`)),
-        saveMetrics:
-            async (url, data) => {
+        addHistoryUrl: (url) => (queryDB(`INSERT IGNORE INTO url_history (url) VALUES ('${url}')`)),
+        saveMetrics: async (url, data) => {
                 const OkPacket = [];
                 let metrics;
                 for (const item in data.metrics) {
