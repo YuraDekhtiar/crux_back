@@ -5,10 +5,10 @@ module.exports = {
         getTrackingUrl:
             () => queryDB(`SELECT * FROM tracking_url`),
         addTrackingUrl:
-            (items, success) => queryDB(
+            (url, success) => queryDB(
                 `INSERT INTO tracking_url (url, last_tracking_date, success) VALUES ?
                 ON DUPLICATE KEY UPDATE last_tracking_date='${util.nowDate()}', success=${success}`,
-                [items.map(item => [item, util.nowDate(), success])]
+                [url.map(u => [u, util.nowDate(), success])]
             ),
         deleteTrackingUrl:
             (items) => (queryDB(`DELETE FROM tracking_url WHERE (id) IN (?)`,

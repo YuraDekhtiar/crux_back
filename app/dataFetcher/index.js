@@ -11,8 +11,8 @@ module.exports = {
     getAllTrackingUrl: async () => {
         return await DB.getTrackingUrl().then(r => r)
     },
-    addUrl: async (urls) => {
-        return DB.addTrackingUrl(urls, 0).then(r => r);
+    addUrl: async (url) => {
+        return await DB.addTrackingUrl(url, 0);
     },
     deleteUrl: async (id) => {
         return DB.deleteTrackingUrl(id).then(r => r);
@@ -49,24 +49,14 @@ async function saveData({res}) {
     return OkPacket;
 }
 
-/*
+
 const task = nodeCron.schedule(`00 00 05 * * *`, async () => {
-    console.log(new Date());
-
-})
-task.start();
-*/
-
-async function temp() {
-    const data = [];
     for (const item of await DB.getTrackingUrl().then(r => r)) {
         await saveData(await getMetrics(item.url).then(r => r));
     }
-    console.log('End')
-}
-
-//temp();
-
+    console.log('End');
+})
+task.start();
 
 
 //DB.getTrackingUrl().then(r => console.log(  r))

@@ -2,7 +2,6 @@ const adminPanel = require('./index');
 const {util} = require("../utils");
 
 module.exports = {
-    // Дописати отримання url;
     metricsByUrl: async (ctx, next) => {
         try {
             const params = {
@@ -21,9 +20,11 @@ module.exports = {
         }
         return next();
     },
+    // дописати
     metricsById: async (ctx, next) => {
         try {
-            ctx.body = await adminPanel.getMetricsById([20,30,160]);
+            const id = ctx.query['id'];
+            ctx.body = await adminPanel.getMetricsById(util.toArray(id));
             ctx.status = 200;
         } catch (e) {
             console.error(`ERROR -> ${e?.message}, PATH -> ${__filename}, METHOD -> get`);
@@ -46,7 +47,7 @@ module.exports = {
     },
     getMetricsGetTest: async (ctx, next) => {
         try {
-            const url = 'https://auto.ria.com/uk/'
+            const url = 'https://auto.ria.com/uk/newauto/'
 
             ctx.body = await adminPanel.getMetricsOnline(util.toArray(url));
             ctx.status = 200;
