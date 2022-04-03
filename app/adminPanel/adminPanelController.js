@@ -6,7 +6,7 @@ module.exports = {
     metricsByUrl: async (ctx, next) => {
         try {
             const params = {
-                url: util.toArray(ctx.query['url']),
+                urls: util.toArray(ctx.query['url']),
                 fromDate: ctx.query['from_date'],
                 endDate: ctx.query['end_date'],
                 limit: ctx.query['limit'],
@@ -46,7 +46,7 @@ module.exports = {
     },
     getMetricsGetTest: async (ctx, next) => {
         try {
-            const url = 'https://auto.ria.com/uk/'
+            const url = 'https://auto.ria.com/uk/newauto/'
 
             ctx.body = await adminPanel.getMetricsOnline(util.toArray(url));
             ctx.status = 200;
