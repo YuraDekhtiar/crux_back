@@ -22,9 +22,9 @@ router
     .get('/dataFetcher/start', dataFetcher.startSchedule)
     // adminPanel routes
     .get('/adminPanel/metrics/', adminPanel.metricsByUrl)
-    .get('/adminPanel/metricsById', adminPanel.metricsById)
-    .post('/adminPanel/metrics_to_url', adminPanel.getMetrics)
-    .get('/adminPanel/metrics_to_url', adminPanel.getMetricsGetTest)
+    .get('/adminPanel/metrics_by_id', adminPanel.metricsById)
+    .post('/adminPanel/metrics_by_url', adminPanel.getMetrics)
+    .get('/adminPanel/metrics_by_url', adminPanel.getMetricsGetTest)
 
 module.exports = {
     router,
