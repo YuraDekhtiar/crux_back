@@ -45,8 +45,7 @@ module.exports = {
     },
     deleteUrl: async (ctx, next) => {
         try {
-            const id = ctx.query['id'];
-            ctx.body = await dataFetcher.deleteUrl(util.toArray(id));
+            ctx.body = await dataFetcher.deleteUrl(util.toArray(ctx.request.body.id));
             ctx.status = 200;
         } catch (e) {
             console.error(`ERROR -> ${e?.message}, PATH -> ${__filename}, METHOD -> get`);

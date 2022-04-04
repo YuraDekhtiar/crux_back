@@ -15,7 +15,7 @@ module.exports = {
         return await DB.addTrackingUrl(url, 0);
     },
     deleteUrl: async (id) => {
-        return DB.deleteTrackingUrl(id).then(r => r);
+        return await DB.deleteTrackingUrl(id);
     },
     stopSchedule: () => {
         return 'Scheduler stoped'
