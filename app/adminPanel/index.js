@@ -14,6 +14,7 @@ module.exports = {
     },
     getMetricsById: async (id) => await DB.getMetricsById(id),
     analyzeUrl: async (urls) => {
+        console.log(urls)
         const OkPacket = [];
         const res = [];
         for (const url of urls) {

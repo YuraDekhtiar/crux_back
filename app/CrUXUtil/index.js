@@ -18,7 +18,7 @@ async function getCrUX(url, formFactor) {
     await query(params, headers).then(res => data.push(res))
 
 
-    return data[0];
+    return {...data[0], url:url};
 
 }
 

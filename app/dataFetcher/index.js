@@ -37,17 +37,14 @@ async function getMetrics(url, formFactor)  {
 
 async function saveData({res}) {
     const OkPacket = [];
-    let url;
 
     if(typeof res.error === 'undefined') {
-        url = res.urlNormalizationDetails.originalUrl;
-        await DB.addTrackingUrl(util.toArray(url), 1);
-        await DB.addHistoryUrl(url);
-        OkPacket.push(...await DB.saveMetrics(url, res.record))
+        await DB.addTrackingUrl(util.toArray(res.url), 1);
+        await DB.addHistoryUrl(res.url);
+        OkPacket.push(...await DB.saveMetrics(res.url, res.record))
     } else {
-        await DB.addTrackingUrl(util.toArray(url), 0)
+        await DB.addTrackingUrl(util.toArray(res.url), 0)
     }
-
     return OkPacket;
 }
 
