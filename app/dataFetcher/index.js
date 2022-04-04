@@ -1,11 +1,9 @@
 const {DB} = require('./dataFetcherDAL');
+const adminPanelDAL = require('../adminPanel/adminPanelDAL');
+
 const nodeCron = require('node-cron');
 const CrUXUtil = require('../CrUXUtil/')
 const {util} = require('../utils/index')
-
-// Мінімальна затримка для запитів до GOOGLE CRUX
-// 2.5 запити на 1 секунду
-const MIN_TIME_DELAYS = 400;
 
 module.exports = {
     getAllTrackingUrl: async () => {
@@ -49,12 +47,25 @@ async function saveData({res}) {
 }
 
 const task = nodeCron.schedule(`00 00 05 * * *`, async () => {
-    for (const item of await DB.getTrackingUrl().then(r => r)) {
-        await saveData(await getMetrics(item.url).then(r => r));
-    }
-    console.log('End');
+    await imitUpdateEveryDay();
 })
 task.start();
 
+async function imitUpdateEveryDay() {
+    for (const item of await DB.getTrackingUrl().then(r => r)) {
+        const dataPhone = await adminPanelDAL.DB.getMetricsByUrl(item.url, {formFactor:'phone'});
+        const dataDesktop = await adminPanelDAL.DB.getMetricsByUrl(item.url, {formFactor:'desktop'});
+
+        if(dataPhone.length === 0) {
+            await saveData(await getMetrics(item.url, 'phone'));
+        }
+        if(dataDesktop.length === 0) {
+           await saveData(await getMetrics(item.url, 'desktop'));
+        }
+    }
+    console.log('End');
+}
+
+//imitUpdateEveryDay();
 
 //DB.getTrackingUrl().then(r => console.log(  r))

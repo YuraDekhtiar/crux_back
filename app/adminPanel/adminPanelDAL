@@ -29,7 +29,7 @@ module.exports = {
         getMetricsById: async (id) => await queryDB(
                 `${baseMetricsQuery} WHERE metrics.id IN (?) 
                 LIMIT ${LIMIT}`,
-                [id.map(item => [item])]
+                [id.map(i => [i])]
             ),
 
     }

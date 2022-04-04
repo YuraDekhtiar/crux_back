@@ -19,7 +19,6 @@ module.exports = {
         }
         return next();
     },
-    // дописати
     metricsById: async (ctx, next) => {
         try {
             const id = ctx.query['id'];
