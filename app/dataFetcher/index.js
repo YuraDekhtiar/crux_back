@@ -15,12 +15,6 @@ module.exports = {
     deleteUrl: async (id) => {
         return await DB.deleteTrackingUrl(id);
     },
-    stopSchedule: () => {
-        return 'Scheduler stoped'
-    },
-    startSchedule: () => {
-        return 'Scheduler started'
-    },
     getMetrics: (url, formFactor) => getMetrics(url, formFactor),
     saveData: (data) => saveData(data)
 
