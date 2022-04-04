@@ -9,3 +9,8 @@
 Отримання метрик по ID
 
     http://127.0.0.1:3000/adminPanel/metrics_by_id/?id=4
+
+
+
+### Аналіз нових urls
+    http://127.0.0.1:3000/adminPanel/analyze_url
