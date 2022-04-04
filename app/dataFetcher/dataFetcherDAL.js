@@ -3,12 +3,15 @@ const {util} = require("../utils");
 
 module.exports = {
     DB: {
-        getTrackingUrl: () => queryDB(`SELECT * FROM tracking_url`),
-        addTrackingUrl: (url, success) => queryDB(
+        getTrackingUrl: () => queryDB(`SELECT * FROM tracking_url ORDER BY success`),
+        addTrackingUrl: (url, success, date) => {
+            const insertDate = date === null ? date : util.nowDate();
+            return queryDB(
                 `INSERT INTO tracking_url (url, last_tracking_date, success) VALUES ?
                 ON DUPLICATE KEY UPDATE last_tracking_date='${util.nowDate()}', success=${success}`,
-                [url.map(u => [u, util.nowDate(), success])]
-            ),
+                [url.map(u => [u, insertDate, success])]
+            )
+        },
         deleteTrackingUrl: (id) => queryDB(`DELETE FROM tracking_url WHERE (id) IN (?)`,
                     [id.map(item => [item])]
                 ),

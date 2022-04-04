@@ -43,7 +43,7 @@ module.exports = {
     },
     getMetricsGetTest: async (ctx, next) => {
         try {
-            const url = 'https://auto.ria.com/uk/legkovie/?page=5'
+            const url = 'https://auto.ria.com/uk/legkovie/?page=11'
 
             ctx.body = await adminPanel.analyzeUrl(util.toArray(url));
             ctx.status = 200;

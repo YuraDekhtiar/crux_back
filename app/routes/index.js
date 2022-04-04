@@ -13,9 +13,7 @@ router
         router.stack.forEach(item => routes.push({path:item.path, methods:item.methods.toString()}))
         ctx.body = routes;
         ctx.body.push({metricsDate:'http://127.0.0.1:3000/adminPanel/metrics/?url=https://auto.ria.com/uk/&from_date=2022-03-02&end_date=2022-04-04'});
-       /* const data = await crux.getCrUX('https://auto.ria.com/uk/', 'desktop')
 
-        ctx.body = data.record.metrics.first_input_delay*/
         return next
 
     })

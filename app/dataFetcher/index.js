@@ -12,7 +12,7 @@ module.exports = {
         return await DB.getTrackingUrl().then(r => r)
     },
     addUrl: async (url) => {
-        return await DB.addTrackingUrl(url, 0);
+        return await DB.addTrackingUrl(url, 0,  null);
     },
     deleteUrl: async (id) => {
         return await DB.deleteTrackingUrl(id);
