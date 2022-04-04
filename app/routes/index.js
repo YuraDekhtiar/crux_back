@@ -4,6 +4,8 @@ const router = new Router();
 const dataFetcher = require('../dataFetcher/dataFetcherController');
 const adminPanel = require('../adminPanel/adminPanelController');
 
+const crux = require('../CrUXUtil');
+
 
 router
     .get('/', async (ctx, next) => {
@@ -11,7 +13,10 @@ router
         router.stack.forEach(item => routes.push({path:item.path, methods:item.methods.toString()}))
         ctx.body = routes;
         ctx.body.push({metricsDate:'http://127.0.0.1:3000/adminPanel/metrics/?url=https://auto.ria.com/uk/&from_date=2022-03-02&end_date=2022-04-04'});
+       /* const data = await crux.getCrUX('https://auto.ria.com/uk/', 'desktop')
 
+        ctx.body = data.record.metrics.first_input_delay*/
+        return next
 
     })
     // dataFetcher
@@ -23,9 +28,9 @@ router
     // adminPanel
     .get('/adminPanel/metrics/', adminPanel.metricsByUrl)
     .get('/adminPanel/metrics_by_id', adminPanel.metricsById)
-    .post('/adminPanel/metrics_by_url', adminPanel.metricsByUrlOnline)
+    .post('/adminPanel/analyze_url', adminPanel.analyzeUrl)
 
-    .get('/adminPanel/metrics_by_url', adminPanel.getMetricsGetTest)     // видалити після тестування
+    .get('/adminPanel/analyze_url', adminPanel.getMetricsGetTest)     // видалити після тестування
 
     .get('/adminPanel/tracked_url', adminPanel.trackedUrl)
 

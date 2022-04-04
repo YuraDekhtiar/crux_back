@@ -13,16 +13,20 @@ module.exports = {
         return res;
     },
     getMetricsById: async (id) => await DB.getMetricsById(id),
-    getMetricsOnline: async (urls) => {
+    analyzeUrl: async (urls) => {
         const OkPacket = [];
         const res = [];
         for (const url of urls) {
             const dataPhone = await DB.getMetricsByUrl(url, {formFactor:'phone'});
             const dataDesktop = await DB.getMetricsByUrl(url, {formFactor:'desktop'});
-            if(dataPhone.length === 0 || dataDesktop === 0) {
-                OkPacket.push(...await dataFetcher.saveData(await dataFetcher.getMetrics(url)));
+            if(dataPhone.length === 0) {
+                OkPacket.push(...await dataFetcher.saveData(await dataFetcher.getMetrics(url, 'phone')));
             } else {
                 res.push(...dataPhone)
+            }
+            if(dataDesktop.length === 0) {
+                OkPacket.push(...await dataFetcher.saveData(await dataFetcher.getMetrics(url, 'desktop')));
+            } else {
                 res.push(...dataDesktop)
             }
         }
