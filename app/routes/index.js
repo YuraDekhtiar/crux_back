@@ -35,10 +35,5 @@ module.exports = {
 };
 
 
-
-// delete after tested
-function test() {
-    const date = new Date();
-    return new Date().toISOString().slice(0, 10)
-}
-console.log(   test());
+const a = 0.1;
+console.log(a > 0 && a <= 0.1)

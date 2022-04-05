@@ -11,6 +11,7 @@ module.exports = {
                 limit: ctx.query['limit'],
                 formFactor: ctx.query['form_factor'],
             }
+
             ctx.body = await adminPanel.getMetricsByUrl(params);
             ctx.status = 200;
         } catch (e) {
