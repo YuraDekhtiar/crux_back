@@ -15,7 +15,7 @@ module.exports = {
         deleteTrackingUrl: (id) => queryDB(`DELETE FROM tracking_url WHERE (id) IN (?)`,
                     [id.map(item => [item])]
                 ),
-        addHistoryUrl: (url) => (queryDB(`INSERT IGNORE INTO url_history (url) VALUES ('${url}')`)),
+        addHistoryUrl: (url) => (queryDB(`INSERT INTO url_history (url) VALUES ('${url}') ON DUPLICATE KEY UPDATE url = '${url}'`)),
         saveMetrics: async (url, data) => {
             const OkPacket = [];
             let metrics;

@@ -2,9 +2,13 @@ const queryDB = require("../DB");
 const {util} = require("../utils");
 const LIMIT = `1000`
 
-const baseMetricsQuery = `SELECT metrics.id, metrics.tracking_date, f_f.name AS form_factor, url.url AS url,
-                            m_name.name AS metrics_name, his.good AS good, his.needs_improvement AS needs_improvement,
-                            his.poor AS poor, his.percentiles_75 AS percentiles_75
+const baseMetricsQuery = `SELECT metrics.url_id, url.url AS url, 
+                        metrics.id As metrics_id, metrics.tracking_date, 
+                        f_f.name AS form_factor, 
+                        m_name.name AS metrics_name, 
+                        his.good AS good, 
+                        his.needs_improvement AS needs_improvement,
+                        his.poor AS poor, his.percentiles_75 AS percentiles_75
                         FROM metrics
                         LEFT JOIN 
                             form_factor f_f ON metrics.form_factor_id = f_f.id
