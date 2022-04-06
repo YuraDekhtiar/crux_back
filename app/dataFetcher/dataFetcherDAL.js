@@ -23,10 +23,6 @@ module.exports = {
             for (const item in data.metrics) {
                 percentiles75 = data.metrics[item].percentiles.p75
                 metrics = data.metrics[item].histogram;
-                console.log(url)
-                console.log(percentiles75)
-                console.log(metrics)
-
                  const idLatestHistogram = await queryDB(`INSERT INTO histogram (good, needs_improvement, poor, percentiles_75)
                          VALUES ('${metrics[0].density || 0}', '${metrics[1].density || 0}', '${metrics[2].density  || 0}', '${percentiles75}')`)
                      .then(r => r.insertId);
