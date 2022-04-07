@@ -4,15 +4,16 @@ const router = new Router();
 const dataFetcher = require('../dataFetcher/dataFetcherController');
 const adminPanel = require('../adminPanel/adminPanelController');
 
-const crux = require('../CrUXUtil');
+const CrUXUtil = require("../CrUXUtil");
 
 
 router
     .get('/', async (ctx, next) => {
         const routes = [];
         router.stack.forEach(item => routes.push({path:item.path, methods:item.methods.toString()}))
-        ctx.body = routes;
-        ctx.body.push({metricsDate:'http://127.0.0.1:3000/adminPanel/metrics/?url=https://auto.ria.com/uk/&from_date=2022-03-02&end_date=2022-04-04'});
+        ctx.body =    await CrUXUtil.getCrUX('https://auto.ria.com/uk/', 'phone');
+
+        //ctx.body.push({metricsDate:'http://127.0.0.1:3000/adminPanel/metrics/?url=https://auto.ria.com/uk/&from_date=2022-03-02&end_date=2022-04-04'});
 
         return next;
 
