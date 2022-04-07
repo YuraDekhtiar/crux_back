@@ -17,8 +17,7 @@ const baseMetricsQuery = `SELECT metrics.url_id, url.url AS url,
                         LEFT JOIN 
                             metrics_name m_name ON metrics.metrics_name_id = m_name.id  
                         LEFT JOIN 
-                            histogram his ON metrics.histogram_id = his.id
-                        `
+                            histogram his ON metrics.histogram_id = his.id`
 
 module.exports = {
     DB: {
@@ -35,7 +34,7 @@ module.exports = {
                 LIMIT ${LIMIT}`,
                 [id.map(i => [i])]
             ),
-
+        getUrlHistory: async () => await queryDB(`SELECT * FROM url_history ORDER BY url`),
     }
  }
 

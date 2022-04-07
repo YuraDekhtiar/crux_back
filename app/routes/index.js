@@ -25,6 +25,7 @@ router
     .get('/adminPanel/metrics/', adminPanel.metricsByUrl)
     .get('/adminPanel/metrics_by_id', adminPanel.metricsById)
     .post('/adminPanel/analyze_url', adminPanel.analyzeUrl)
+    .get('/adminPanel/url_history', adminPanel.urlHistory)
 
     .get('/adminPanel/analyze_url', adminPanel.getMetricsGetTest)     // видалити після тестування
 

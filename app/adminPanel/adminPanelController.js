@@ -63,4 +63,14 @@ module.exports = {
         }
         return next();
     },
+    urlHistory: async (ctx, next) => {
+        try {
+            ctx.body = await adminPanel.getUrlHistory();
+            ctx.status = 200;
+        } catch (e) {
+            console.error(`ERROR -> ${e?.message}, PATH -> ${__filename}, METHOD -> get`);
+            ctx.status = 500;
+        }
+        return next();
+    },
 }

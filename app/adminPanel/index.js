@@ -4,6 +4,7 @@ const dataFetcher = require('../dataFetcher/index');
 
 module.exports = {
     getTrackedUrl: async () => DB.getTrackedUrl(),
+    getUrlHistory: async () => DB.getUrlHistory(),
     getMetricsByUrl: async (params) => {
         const {urls} = params;
         const res = [];
