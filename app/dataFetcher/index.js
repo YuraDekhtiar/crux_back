@@ -46,6 +46,8 @@ const task = nodeCron.schedule(`00 00 05 * * *`, async () => {
 task.start();
 
 async function imitUpdateEveryDay() {
+    console.log('START - imitUpdateEveryDay');
+
     for (const item of await DB.getTrackingUrl().then(r => r)) {
         const dataPhone = await adminPanelDAL.DB.getMetricsByUrl(item.url, {formFactor:'phone'});
         const dataDesktop = await adminPanelDAL.DB.getMetricsByUrl(item.url, {formFactor:'desktop'});
@@ -57,7 +59,7 @@ async function imitUpdateEveryDay() {
            await saveData(await getMetrics(item.url, 'desktop'));
         }
     }
-    console.log('End');
+    console.log('END - imitUpdateEveryDay');
 }
 
 //imitUpdateEveryDay();

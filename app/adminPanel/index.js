@@ -1,5 +1,6 @@
 const {DB} = require('./adminPanelDAL');
 const dataFetcher = require('../dataFetcher/index');
+const {util} = require("../utils");
 
 
 module.exports = {
@@ -16,25 +17,21 @@ module.exports = {
     getMetricsById: async (id) => await DB.getMetricsById(id),
     analyzeUrl: async (urls) => {
         const OkPacket = [];
-        const res = [];
         for (const url of urls) {
             const dataPhone = await DB.getMetricsByUrl(url, {formFactor:'phone'});
             const dataDesktop = await DB.getMetricsByUrl(url, {formFactor:'desktop'});
             if(dataPhone.length === 0) {
                 OkPacket.push(...await dataFetcher.saveData(await dataFetcher.getMetrics(url, 'phone')));
             } else {
-                res.push(...dataPhone)
+                OkPacket.push(...dataPhone.map(i => i.url_id))
             }
             if(dataDesktop.length === 0) {
                 OkPacket.push(...await dataFetcher.saveData(await dataFetcher.getMetrics(url, 'desktop')));
             } else {
-                res.push(...dataDesktop)
+                OkPacket.push(...dataDesktop.map(i => i.url_id))
             }
         }
-        if(OkPacket.length > 0) {
-            res.push(...await DB.getMetricsById(OkPacket.map(item => item.insertId)));
-        }
-        return res;
+        return {url_id: [...new Set(OkPacket)]}
     },
 
 

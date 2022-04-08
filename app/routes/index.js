@@ -1,19 +1,19 @@
 const Router = require('koa-router');
 const router = new Router();
-
 const dataFetcher = require('../dataFetcher/dataFetcherController');
 const adminPanel = require('../adminPanel/adminPanelController');
+const dataAggregationModule = require("../dataAggregationModule/dataAggregationModuleController");
 
 const CrUXUtil = require("../CrUXUtil");
-
 
 router
     .get('/', async (ctx, next) => {
         const routes = [];
         router.stack.forEach(item => routes.push({path:item.path, methods:item.methods.toString()}))
-        ctx.body =    await CrUXUtil.getCrUX('https://auto.ria.com/uk/', 'phone');
+        //ctx.body = routes
 
-        //ctx.body.push({metricsDate:'http://127.0.0.1:3000/adminPanel/metrics/?url=https://auto.ria.com/uk/&from_date=2022-03-02&end_date=2022-04-04'});
+        ctx.body = routes;
+        ctx.body.push({metricsDate:'http://127.0.0.1:3000/adminPanel/metrics/?url=https://auto.ria.com/uk/&from_date=2022-03-02&end_date=2022-04-04'});
 
         return next;
 
@@ -27,10 +27,10 @@ router
     .get('/adminPanel/metrics_by_id', adminPanel.metricsById)
     .post('/adminPanel/analyze_url', adminPanel.analyzeUrl)
     .get('/adminPanel/url_history', adminPanel.urlHistory)
-
-    .get('/adminPanel/analyze_url', adminPanel.getMetricsGetTest)     // видалити після тестування
-
     .get('/adminPanel/tracked_url', adminPanel.trackedUrl)
+    .get('/statistics_charts', dataAggregationModule.staticUrl)
+    .get('/dynamics_charts', dataAggregationModule.dynamicsUrl)
+
 
 module.exports = {
     router,

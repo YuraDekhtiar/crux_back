@@ -1,6 +1,6 @@
 const queryDB = require("../DB");
 const {util} = require("../utils");
-const LIMIT = `1000`
+const LIMIT = `5000`
 
 const baseMetricsQuery = `SELECT metrics.url_id, url.url AS url, 
                         metrics.id As metrics_id, metrics.tracking_date, 
@@ -34,6 +34,12 @@ module.exports = {
                 LIMIT ${LIMIT}`,
                 [id.map(i => [i])]
             ),
+        getMetricsByUrlId: async (id, fromDate, endDate) => await queryDB(
+            `${baseMetricsQuery} WHERE url_id IN (?) AND metrics.tracking_date BETWEEN ('${fromDate}') AND ('${endDate}')
+                ORDER BY metrics.tracking_date ASC
+                LIMIT ${LIMIT}`,
+            [id.map(i => [i])]
+        ),
         getUrlHistory: async () => await queryDB(`SELECT * FROM url_history ORDER BY url`),
     }
  }
