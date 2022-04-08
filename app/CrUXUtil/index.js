@@ -6,7 +6,6 @@ const API_ENDPOINT = `https://chromeuxreport.googleapis.com/v1/records:queryReco
 const CRUX_METRICS = ['first_input_delay', 'largest_contentful_paint', 'cumulative_layout_shift'];
 
 async function getCrUX(url, formFactor) {
-    const data = [];
     const params = {
         url: url,
         metrics: CRUX_METRICS,
@@ -15,10 +14,9 @@ async function getCrUX(url, formFactor) {
     const headers = {
         // referer
     }
-    await query(params, headers).then(res => data.push(res))
+    return {...await query(params, headers), url:url};
 
-
-    return {...data[0], url:url};
+    //return generationDate(url, formFactor)
 
 }
 
@@ -33,6 +31,69 @@ async function query(payload, headers)  {
         options.headers = headers;
     }
     return await fetch(url, options).then(res => res.json());
+}
+
+function generationDate(url, formFactor) {
+    return {
+        record: {
+            key: {
+            formFactor: formFactor,
+            url: url
+        },
+        metrics: {
+            largest_contentful_paint: {
+                histogram: [
+                    {
+                        density: 0.7094808676578109
+                    },
+                    {
+                        density: 0.17462832074092127
+                    },
+                    {
+                        density: 0.11589081160126782
+                    }
+                ],
+                    percentiles: {
+                    p75: 2782
+                }
+            },
+            cumulative_layout_shift: {
+                histogram: [
+                    {
+                        density: 0.6898564826076379
+                    },
+                    {
+                        density: 0.23145220141084893
+                    },
+                    {
+                        density: 0.07869131598151317
+                    }
+                ],
+                    percentiles: {
+                    p75: "0.11"
+                }
+            },
+            first_input_delay: {
+                histogram: [
+                    {
+                        density: 0.7784320942215682
+                    },
+                    {
+                        density: 0.10096920623236418
+                    },
+                    {
+                        density: 0.12059869954606764
+                    }
+                ],
+                    percentiles: {
+                    p75: 79
+                }
+            }
+        }
+    },
+    url:url
+    }
+
 }
 
 module.exports = {
