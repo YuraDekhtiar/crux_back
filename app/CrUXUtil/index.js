@@ -14,9 +14,9 @@ async function getCrUX(url, formFactor) {
     const headers = {
         // referer
     }
-    return {...await query(params, headers), url:url};
+    //return {...await query(params, headers), url:url};
 
-    //return generationDate(url, formFactor)
+    return generationDate(url, formFactor)
 
 }
 

@@ -2,57 +2,30 @@ const {DB} = require('./adminPanelDAL');
 const dataFetcher = require('../dataFetcher/index');
 const {util} = require("../utils");
 
-
-function filter(data, url, metrics_name, form_facrtor) {
-    const r = data.filter(d => d.url === url && d.form_factor === form_facrtor && d.metrics_name === metrics_name)
-    return r.map(i => {
-        return {
-            good: i.good,
-            needs_improvement: i.needs_improvement,
-            poor: i.poor,
-            p_75: i.percentiles_75
-        }
-
-    })
-}
-
 module.exports = {
-    getData: async () => {
+    getTrackedUrl: async () => DB.getTrackedUrl(),
+    getUrlHistory: async () => DB.getUrlHistory(),
+    getMetricsByUrlId: async (params) => {
+        // Доробити вивід по ID і вхідних параметрах
         const urls = await DB.getUrlHistory();
         const data = await DB.getMetricsByUrlId(urls.map(u => u.id), util.nowDate(), util.nowDate())
-        //return data;
         return urls.map( u => {
                 return {
                     url_id: u.id,
                     url: u.url,
                     desktop: {
-                        cls: filter(data, u.url, 'cumulative_layout_shift', 'desktop'),
-                        fid: filter(data, u.url, 'first_input_delay', 'desktop'),
-                        lcp: filter(data, u.url, 'largest_contentful_paint', 'desktop'),
+                        cls: filterToTable(data, u.url, 'cumulative_layout_shift', 'desktop') ,
+                        fid: filterToTable(data, u.url, 'first_input_delay', 'desktop'),
+                        lcp: filterToTable(data, u.url, 'largest_contentful_paint', 'desktop'),
                     },
                     phone: {
-                        cls: filter(data, u.url, 'cumulative_layout_shift', 'phone'),
-                        fid: filter(data, u.url, 'first_input_delay', 'phone'),
-                        lcp: filter(data, u.url, 'largest_contentful_paint', 'phone'),
+                        cls: filterToTable(data, u.url, 'cumulative_layout_shift', 'phone'),
+                        fid: filterToTable(data, u.url, 'first_input_delay', 'phone'),
+                        lcp: filterToTable(data, u.url, 'largest_contentful_paint', 'phone'),
                     }
                 }
             }
         );
-    },
-
-
-
-
-
-
-
-
-
-
-    getTrackedUrl: async () => DB.getTrackedUrl(),
-    getUrlHistory: async () => DB.getUrlHistory(),
-    getMetricsByUrlId: async (params) => {
-        return await DB.getMetricsByUrlId(params.url_id, util.nowDate(), util.nowDate());
     },
     getMetricsById: async (id) => await DB.getMetricsByUrlId(id),
     analyzeUrl: async (urls) => {
@@ -73,8 +46,24 @@ module.exports = {
         }
         return {url_id: [...new Set(OkPacket)]}
     },
+}
 
-
+function filterToTable(data, url, metrics_name, form_facrtor) {
+    const r = data.filter(d => d.url === url && d.form_factor === form_facrtor && d.metrics_name === metrics_name);
+    if(r.length === 0) {
+        return {
+            good: 0,
+            needs_improvement: 0,
+            poor: 0,
+            p_75: 0,
+        }
+    }
+    return {
+        good: r[0].good,
+        needs_improvement: r[0].needs_improvement,
+        poor: r[0].poor,
+        p_75: r[0].percentiles_75
+    }
 
 }
 
