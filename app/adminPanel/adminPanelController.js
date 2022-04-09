@@ -2,17 +2,16 @@ const adminPanel = require('./index');
 const {util} = require("../utils");
 
 module.exports = {
-    metricsByUrl: async (ctx, next) => {
+    metricsByUrlId: async (ctx, next) => {
         try {
             const params = {
-                urls: util.toArray(ctx.query['url']),
+                url_id: util.toArray(ctx.query['url_id']),
                 fromDate: ctx.query['from_date'],
                 endDate: ctx.query['end_date'],
                 limit: ctx.query['limit'],
                 formFactor: ctx.query['form_factor'],
             }
-
-            ctx.body = await adminPanel.getMetricsByUrl(params);
+            ctx.body = await adminPanel.getMetricsByUrlId(params);
             ctx.status = 200;
         } catch (e) {
             console.error(`ERROR -> ${e?.message}, PATH -> ${__filename}, METHOD -> get`);

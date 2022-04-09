@@ -5,6 +5,7 @@ const formFactor = {phone:'phone', desktop:'desktop'};
 
 module.exports = {
     dynamicsUrl: async (url_id, dateFrom, dateTo) => {
+        //url_id = [857, 922]
         const data = await DB.getMetricsByUrlId(url_id, dateFrom, dateTo);
         const uniqueDates = [...new Set(data.map(i => util.convertDate(i.tracking_date)))];
         const uniqueUrl= [...new Set(data.map(i => i.url))];
@@ -15,9 +16,9 @@ module.exports = {
             desktop: uniqueDates.map(date => {
                 return {
                     date: date,
-                    cls:dynamic.filterCLS(data.filter(i => i.metrics_name === 'cumulative_layout_shift'), date, formFactor.desktop),
-                    fid:dynamic.filterFID(data.filter(i => i.metrics_name === 'first_input_delay'), date, formFactor.desktop),
-                    lcp:dynamic.filterLCP(data.filter(i => i.metrics_name === 'first_input_delay'), date, formFactor.desktop)
+                    cls:dynamic.filterCLS(data.filter(i => i.metrics_name === 'cumulative_layout_shift' && i.form_factor === formFactor.desktop), date),
+                    fid:dynamic.filterFID(data.filter(i => i.metrics_name === 'first_input_delay' && i.form_factor === formFactor.desktop), date),
+                    lcp:dynamic.filterLCP(data.filter(i => i.metrics_name === 'first_input_delay' && i.form_factor === formFactor.desktop), date)
                 }
             }),
             phone: uniqueDates.map(date => {
@@ -31,8 +32,8 @@ module.exports = {
             labels: uniqueDates
         }
     },
-    staticUrl: async (url_id) => {
-        const data = await DB.getMetricsByUrlId(url_id, '2022-04-07', '2022-04-07');
+    staticUrl: async (url_id, date) => {
+        const data = await DB.getMetricsByUrlId(url_id, date, date);
         const uniqueUrl= [...new Set(data.map(i => i.url))];
 
         return {
@@ -85,8 +86,8 @@ const dynamic = {
     filterCLS: (data, date) => {
     const cls = {
         good: {min:0.0, max:0.1 },
-        needs_improvement: {min:0.1, max:0.25 },
-        poor: {min:0.25, max:this.min*100 },
+        needs_improvement: {min:0.11, max:0.25 },
+        poor: {min:0.26, max:this.min*100 },
     }
     return filter(data, cls, date)
 },

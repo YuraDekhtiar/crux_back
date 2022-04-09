@@ -61,7 +61,7 @@ async function imitUpdateEveryDay() {
     }
     console.log('END - imitUpdateEveryDay');
 }
-
-//imitUpdateEveryDay();
+imitUpdateEveryDay();
 
 //DB.getTrackingUrl().then(r => console.log(  r))
+
