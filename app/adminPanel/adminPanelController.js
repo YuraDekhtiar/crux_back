@@ -40,31 +40,9 @@ module.exports = {
         }
         return next();
     },
-    getMetricsGetTest: async (ctx, next) => {
-        try {
-            const url = 'https://auto.ria.com/uk/legkovie/?page=11'
-
-            ctx.body = await adminPanel.analyzeUrl(util.toArray(url));
-            ctx.status = 200;
-        } catch (e) {
-            console.error(`ERROR -> ${e?.message}, PATH -> ${__filename}, METHOD -> get`);
-            ctx.status = 500;
-        }
-        return next();
-    },
     trackedUrl: async (ctx, next) => {
         try {
             ctx.body = await adminPanel.getTrackedUrl();
-            ctx.status = 200;
-        } catch (e) {
-            console.error(`ERROR -> ${e?.message}, PATH -> ${__filename}, METHOD -> get`);
-            ctx.status = 500;
-        }
-        return next();
-    },
-    urlHistory: async (ctx, next) => {
-        try {
-            ctx.body = await adminPanel.getUrlHistory();
             ctx.status = 200;
         } catch (e) {
             console.error(`ERROR -> ${e?.message}, PATH -> ${__filename}, METHOD -> get`);

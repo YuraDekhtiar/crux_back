@@ -7,7 +7,7 @@ const {util} = require('../utils/index')
 
 module.exports = {
     getAllTrackingUrl: async () => {
-        return await DB.getTrackingUrl().then(r => r)
+        return await DB.getTrackingUrl();
     },
     addUrl: async (url) => {
         return await DB.addTrackingUrl(url, 0,  null);
@@ -17,7 +17,6 @@ module.exports = {
     },
     getMetrics: (url, formFactor) => getMetrics(url, formFactor),
     saveData: (data) => saveData(data)
-
 };
 
 async function getMetrics(url, formFactor)  {

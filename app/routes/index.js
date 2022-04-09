@@ -20,8 +20,8 @@ router
     .get('/adminPanel/metrics_by_url_id/', adminPanel.metricsByUrlId)
     .get('/adminPanel/metrics_by_id', adminPanel.metricsById)
     .post('/adminPanel/analyze_url', adminPanel.analyzeUrl)
-    .get('/adminPanel/url_history', adminPanel.urlHistory)
     .get('/adminPanel/tracked_url', adminPanel.trackedUrl)
+    // dataAggregationModule
     .get('/statistics_charts', dataAggregationModule.staticUrl)
     .get('/dynamics_charts', dataAggregationModule.dynamicsUrl)
 

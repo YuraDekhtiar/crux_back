@@ -14,12 +14,12 @@ async function getCrUX(url, formFactor) {
     const headers = {
         // referer
     }
-    //return {...await query(params, headers), url:url};
+    return {...await query(params, headers), url:url};
 
-    return generationDate(url, formFactor)
+    // Видалити після тестів
+    //return generationDate(url, formFactor)
 
 }
-
 async function query(payload, headers)  {
     const url = API_ENDPOINT;
     const options = {
@@ -33,6 +33,7 @@ async function query(payload, headers)  {
     return await fetch(url, options).then(res => res.json());
 }
 
+// Видалити після тестів
 function generationDate(url, formFactor) {
     return {
         record: {

@@ -4,7 +4,6 @@ const {util} = require("../utils");
 
 module.exports = {
     getTrackedUrl: async () => DB.getTrackedUrl(),
-    getUrlHistory: async () => DB.getUrlHistory(),
     getMetricsByUrlId: async (params) => {
         // Доробити вивід по ID і вхідних параметрах
         const urls = await DB.getUrlHistory();

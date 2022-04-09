@@ -5,7 +5,6 @@ const formFactor = {phone:'phone', desktop:'desktop'};
 
 module.exports = {
     dynamicsUrl: async (url_id, dateFrom, dateTo) => {
-        //url_id = [857, 922]
         const data = await DB.getMetricsByUrlId(url_id, dateFrom, dateTo);
         const uniqueDates = [...new Set(data.map(i => util.convertDate(i.tracking_date)))];
         const uniqueUrl= [...new Set(data.map(i => i.url))];
@@ -35,7 +34,6 @@ module.exports = {
     staticUrl: async (url_id, date) => {
         const data = await DB.getMetricsByUrlId(url_id, date, date);
         const uniqueUrl= [...new Set(data.map(i => i.url))];
-
         return {
             query_url_count: url_id.length,
             res_url_count: uniqueUrl.length,
