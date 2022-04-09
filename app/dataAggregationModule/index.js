@@ -11,13 +11,13 @@ module.exports = {
 
         return {
             query_url_count: url_id.length,
-            res_url_count: uniqueUrl.length,
+            result_url_count: uniqueUrl.length,
             desktop: uniqueDates.map(date => {
                 return {
                     date: date,
-                    cls:dynamic.filterCLS(data.filter(i => i.metrics_name === 'cumulative_layout_shift' && i.form_factor === formFactor.desktop), date),
-                    fid:dynamic.filterFID(data.filter(i => i.metrics_name === 'first_input_delay' && i.form_factor === formFactor.desktop), date),
-                    lcp:dynamic.filterLCP(data.filter(i => i.metrics_name === 'first_input_delay' && i.form_factor === formFactor.desktop), date)
+                    cls: dynamic.filterCLS(data.filter(i => i.metrics_name === 'cumulative_layout_shift' && i.form_factor === formFactor.desktop), date),
+                    fid: dynamic.filterFID(data.filter(i => i.metrics_name === 'first_input_delay' && i.form_factor === formFactor.desktop), date),
+                    lcp: dynamic.filterLCP(data.filter(i => i.metrics_name === 'first_input_delay' && i.form_factor === formFactor.desktop), date)
                 }
             }),
             phone: uniqueDates.map(date => {
@@ -36,7 +36,7 @@ module.exports = {
         const uniqueUrl= [...new Set(data.map(i => i.url))];
         return {
             query_url_count: url_id.length,
-            res_url_count: uniqueUrl.length,
+            result_url_count: uniqueUrl.length,
             desktop: {
                 cls: static.filterCLS(data.filter(i => i.metrics_name === 'cumulative_layout_shift' && i.form_factor === formFactor.desktop)),
                 fid: static.filterFID(data.filter(i => i.metrics_name === 'first_input_delay' && i.form_factor === formFactor.desktop)),
@@ -120,17 +120,19 @@ function groupMetricsUrl(data, arrayMetrics) {
     return {arrayMetrics, labels};
 }
 function filter(data, metrics ,date) {
+    const good = data.filter(i => i.percentiles_75 >= metrics.good.min && metrics.good.max > i.percentiles_75
+        && util.convertDate(i.tracking_date) === date).length;
+    const needs_improvement = data.filter(i => i.percentiles_75 >= metrics.needs_improvement.min
+        && metrics.needs_improvement.max > i.percentiles_75
+        && util.convertDate(i.tracking_date) === date).length;
+    const poor = data.filter(i => i.percentiles_75 >= metrics.poor.min
+        && metrics.poor.max > i.percentiles_75
+        && util.convertDate(i.tracking_date) === date).length;
     return {
-        good: {count: data.filter(i =>
-                i.percentiles_75 >= metrics.good.min && metrics.good.max > i.percentiles_75
-                && util.convertDate(i.tracking_date) === date).length},
-        needs_improvement: {count: data.filter(i =>
-                i.percentiles_75 >= metrics.needs_improvement.min
-                && metrics.needs_improvement.max > i.percentiles_75
-                && util.convertDate(i.tracking_date) === date).length},
-        poor: {count: data.filter(i => i.percentiles_75 >= metrics.poor.min
-                && metrics.poor.max > i.percentiles_75
-                && util.convertDate(i.tracking_date) === date).length},
+        good: {count: good},
+        needs_improvement: {count: needs_improvement},
+        poor: {count: poor},
+        url_count: good + needs_improvement + poor
     }
 }
 
