@@ -85,7 +85,7 @@ const dynamic = {
     const cls = {
         good: {min:0.0, max:0.1 },
         needs_improvement: {min:0.11, max:0.25 },
-        poor: {min:0.26, max:this.min*100 },
+        poor: {min:0.26, max: 10},
     }
     return filter(data, cls, date)
 },
@@ -93,7 +93,7 @@ const dynamic = {
     const fid = {
         good: {min:0, max:100 },
         needs_improvement: {min:100, max:300 },
-        poor: {min:300, max:this.min*100 },
+        poor: {min:300, max: 10000 },
     }
     return filter(data, fid, date)
 },
@@ -101,7 +101,7 @@ const dynamic = {
     const lcp = {
         good: {min:0, max:2500 },
         needs_improvement: {min:2500, max:4000 },
-        poor: {min:4000, max:this.min*100 },
+        poor: {min:4000, max: 50000 },
     }
     return filter(data, lcp, date)
 }
