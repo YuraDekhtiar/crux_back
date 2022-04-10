@@ -29,7 +29,3 @@ router
 module.exports = {
     router,
 };
-
-
-const a = 0.1;
-console.log(a > 0 && a <= 0.1)
